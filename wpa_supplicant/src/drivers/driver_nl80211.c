@@ -32,6 +32,10 @@
 #include "eloop.h"
 #include "ieee802_11_defs.h"
 
+#define nl_handle nl_sock
+#define nl_handle_alloc_cb nl_socket_alloc_cb
+#define nl_handle_destroy nl_socket_free
+
 #ifndef IFF_LOWER_UP
 #define IFF_LOWER_UP   0x10000         /* driver signals L1 up         */
 #endif
@@ -1445,8 +1449,7 @@ static void * wpa_driver_nl80211_init(void *ctx, const char *ifname)
 		goto err3;
 	}
 
-	drv->nl_cache = genl_ctrl_alloc_cache(drv->nl_handle);
-	if (drv->nl_cache == NULL) {
+	if (genl_ctrl_alloc_cache(drv->nl_handle, &drv->nl_cache)) {
 		wpa_printf(MSG_ERROR, "nl80211: Failed to allocate generic "
 			   "netlink cache");
 		goto err3;

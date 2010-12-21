@@ -150,9 +150,10 @@ CONFIG_WIRELESS_EXTENSION=y
 endif
 
 ifdef CONFIG_DRIVER_NL80211
-L_CFLAGS += -DCONFIG_DRIVER_NL80211
+L_CFLAGS += -DCONFIG_DRIVER_NL80211 -I$(LOCAL_PATH)/../libnl-include
 OBJS_d += src/drivers/driver_nl80211.c
 LIBS += -lnl
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB += libnl
 ifdef CONFIG_CLIENT_MLME
 OBJS_d += src/drivers/radiotap.c
 endif
